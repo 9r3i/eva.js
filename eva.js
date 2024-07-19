@@ -7,11 +7,15 @@
  * continued at january 13th 2024 - v1.1.0
  *   - replace gaino to browser fetch -- [stand-alone]
  *   - add method parse for parsing json
+ * continued at january 25th 2024 - v1.1.1
+ *   - add error option to catch request
+ * continued at january 25th 2024 - v1.2.0
+ *   - add mode option for cors
  */
 ;function eva(c){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.1.0',
+  value:'1.2.0',
   writable:false,
 });
 c=typeof c==='object'&&c!==null?c:{};
@@ -24,6 +28,7 @@ this.config={
   token:'___EVA_API_TOKEN___',
   apiVersion:'1.0.1',
   authentication:'___EVA_AUTH_CODE___',
+  mode:'cors',
 };
 /* initialize config */
 for(let i in this.config){
@@ -35,6 +40,7 @@ for(let i in this.config){
 this.request=async function(body,opt){
   opt=typeof opt==='object'&&opt!==null?opt:{};
   let config={
+    mode:this.config.mode,
     method:this.config.method,
     headers:{
       'Content-Type': this.config.contentType,
@@ -45,6 +51,7 @@ this.request=async function(body,opt){
     /* gaino will automatically convert body to
        what Content-Type body is */
     body:body,
+    error:typeof opt.error==='function'?opt.error:function(){},
   },
   host=this.config.host;
   if(typeof this.config.authentication==='string'
@@ -88,7 +95,9 @@ this.request=async function(body,opt){
     let res=await fetch(host).then(r=>r.text());
     return res;
   }else{
-    let res=await fetch(host,config).then(r=>r.text());
+    let res=await fetch(host,config)
+      .then(r=>r.text())
+      .catch(e=>config.error(e));
     return res;
   }
 };
