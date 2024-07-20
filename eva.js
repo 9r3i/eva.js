@@ -9,13 +9,15 @@
  *   - add method parse for parsing json
  * continued at january 25th 2024 - v1.1.1
  *   - add error option to catch request
- * continued at january 25th 2024 - v1.2.0
+ * continued at july 17th 2024 - v1.2.0
  *   - add mode option for cors
+ * continued at july 20th 2024 - v1.2.1
+ *   - update eva api version to 1.0.2
  */
 ;function eva(c){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.2.0',
+  value:'1.2.1',
   writable:false,
 });
 c=typeof c==='object'&&c!==null?c:{};
@@ -26,7 +28,7 @@ this.config={
   contentType:'application/json',
   accept:'application/vnd.eva+json',
   token:'___EVA_API_TOKEN___',
-  apiVersion:'1.0.1',
+  apiVersion:'1.0.2',
   authentication:'___EVA_AUTH_CODE___',
   mode:'cors',
 };
